@@ -1,0 +1,153 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no">
+<title>Électrolytes 3D</title>
+<link rel="stylesheet" href="css/app.css">
+</head>
+<body>
+
+<!-- ============ Accueil ============ -->
+<section id="home" class="screen">
+  <canvas id="bg" aria-hidden="true"></canvas>
+  <div class="home-in">
+    <header class="hero">
+      <div class="kicker">Chimie · 1BAC SX-SM</div>
+      <h1>Électrolytes <span>3D</span></h1>
+      <p class="sub">Les solutions électrolytiques, à toucher du doigt.</p>
+      <p class="who">Pr Hicham MESBAH · Lycée Almassira Alkhadra</p>
+    </header>
+    <nav class="cards">
+      <button class="card" data-go="crystal"><span class="n">1</span><b>Cristal NaCl</b><small>Modèles compact et éclaté, voisins d'un ion</small><i class="dots d1"></i></button>
+      <button class="card" data-go="polar"><span class="n">2</span><b>Molécules polaires</b><small>HCl, H₂O, CO₂ : charges δ et barycentres</small><i class="dots d2"></i></button>
+      <button class="card" data-go="diss"><span class="n">3</span><b>Dissolution</b><small>Dissociation, hydratation, dispersion</small><i class="dots d3"></i></button>
+      <button class="card" data-go="cond"><span class="n">4</span><b>Conduction</b><small>Migration des ions entre les électrodes</small><i class="dots d4"></i></button>
+      <button class="card labo" data-go="labo"><span class="n">5</span><b>Labo des concentrations</b><small>Choisis un soluté, une masse, un volume : l'appli calcule C et [X]</small><i class="dots d5"></i></button>
+      <button class="card quiz" data-go="quiz"><span class="n">6</span><b>Quiz</b><small>10 questions pour vérifier ce que tu as compris</small><i class="dots d6"></i></button>
+    </nav>
+    <p class="foot">Fonctionne sans Internet · Glisser pour tourner, pincer pour zoomer</p>
+  </div>
+</section>
+
+<!-- ============ Simulation ============ -->
+<section id="sim" class="screen" hidden>
+  <div class="topbar">
+    <button class="back" id="back" aria-label="Retour à l'accueil"><svg viewBox="0 0 24 24" width="22" height="22"><path d="M15 5l-7 7 7 7" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+    <div class="ttl" id="simTitle">Simulation</div>
+    <div class="who-s">Pr Hicham MESBAH</div>
+  </div>
+  <div class="simbody">
+    <div class="stage" id="stage">
+      <canvas id="cv"></canvas>
+      <div id="labels"></div>
+      <div class="ov tl" id="stageLabel"></div>
+      <div class="ov bl" id="legend"></div>
+      <button class="ov tr recenter" id="recenter">Recentrer</button>
+    </div>
+    <div class="panel" id="panel">
+
+      <div data-panel="crystal" hidden>
+        <h2>Le solide ionique</h2>
+        <p class="muted">Le chlorure de sodium est un empilement régulier d'ions Na⁺ et Cl⁻.</p>
+        <div class="lab">Modèle</div>
+        <div class="row"><button class="btn" id="b-compact" aria-pressed="true">Compact</button><button class="btn" id="b-eclate" aria-pressed="false">Éclaté</button></div>
+        <div class="row"><button class="btn" id="b-voisins" aria-pressed="false">Voisins de l'ion central</button><button class="btn" id="b-rot" aria-pressed="true">Rotation</button></div>
+        <ul class="facts">
+          <li>Chaque Na⁺ est entouré de <b>6 ions Cl⁻</b>.</li>
+          <li>Cohésion : <b>attraction électrostatique</b> entre ions de signes opposés.</li>
+          <li>Autant de charges + que de charges − : le cristal est <b>neutre</b>.</li>
+        </ul>
+      </div>
+
+      <div data-panel="polar" hidden>
+        <h2>La molécule polaire</h2>
+        <div class="row"><button class="btn" id="m-HCl">HCl</button><button class="btn" id="m-H2O">H₂O</button><button class="btn" id="m-CO2">CO₂</button></div>
+        <p id="polarText"></p>
+        <div class="read"><span>Conclusion</span><span class="v" id="polarVerdict"></span></div>
+        <div class="lab">Électronégativité</div>
+        <table class="en"><tr><td>H</td><td>C</td><td>O</td><td>Cl</td><td>F</td></tr><tr><td>2,1</td><td>2,5</td><td>3,5</td><td>3,0</td><td>4,0</td></tr></table>
+        <p class="muted">Polaire si G⁺ ≠ G⁻ (barycentres des charges + et −).</p>
+      </div>
+
+      <div data-panel="diss" hidden>
+        <h2>Dissolution de NaCl</h2>
+        <div class="eq">NaCl<sub>(s)</sub> → Na<sup>+</sup><sub>(aq)</sub> + Cl<sup>−</sup><sub>(aq)</sub></div>
+        <ol class="steps" id="steps">
+          <li data-s="1"><b>1. Dissociation</b> : l'eau détache les ions du cristal.</li>
+          <li data-s="2"><b>2. Hydratation</b> : chaque ion s'entoure d'eau. O vers Na⁺, H vers Cl⁻.</li>
+          <li data-s="3"><b>3. Dispersion</b> : les ions se répartissent dans la solution.</li>
+        </ol>
+        <div class="row"><button class="btn primary" id="d-play">Pause</button><button class="btn" id="d-reset">Recommencer</button></div>
+        <label class="lab" for="d-slider">Avancement</label>
+        <input type="range" id="d-slider" min="0" max="1000" value="0">
+        <p class="muted">Touche une étape pour y aller directement.</p>
+      </div>
+
+      <div data-panel="cond" hidden>
+        <h2>Conduction du courant</h2>
+        <div class="row"><button class="btn" id="c-salt">Eau salée</button><button class="btn" id="c-pure">Eau distillée</button></div>
+        <div class="row"><button class="btn primary" id="c-gen">Fermer le circuit</button></div>
+        <div class="read"><span>Ampèremètre</span><span class="v no" id="c-I">I = 0</span></div>
+        <ul class="facts">
+          <li>Les <b>cations Na⁺</b> migrent vers la <b>cathode (−)</b>.</li>
+          <li>Les <b>anions Cl⁻</b> migrent vers l'<b>anode (+)</b>.</li>
+          <li>Dans les fils, ce sont les <b>électrons</b> qui circulent.</li>
+        </ul>
+      </div>
+
+      <div data-panel="labo" hidden>
+        <h2>Labo des concentrations</h2>
+        <div class="lab">Soluté</div>
+        <div class="row" id="l-sol"></div>
+        <div class="eq" id="l-eq"></div>
+        <label class="lab" for="l-m">Masse dissoute : <span id="l-mv"></span></label>
+        <input type="range" id="l-m" min="0.5" max="30" step="0.05">
+        <label class="lab" for="l-v">Volume de solution : <span id="l-vv"></span></label>
+        <input type="range" id="l-v" min="50" max="1000" step="10">
+        <table class="res">
+          <tr><td>Masse molaire M</td><td id="l-M"></td></tr>
+          <tr><td>n = m / M</td><td id="l-n"></td></tr>
+          <tr><td>C = n / V</td><td id="l-C"></td></tr>
+          <tr><td colspan="2" id="l-cat"></td></tr>
+          <tr><td colspan="2" id="l-an"></td></tr>
+        </table>
+        <p class="muted">Le nombre d'ions dessinés est proportionnel à C. Les solutions de cuivre II et de fer III sont colorées.</p>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ============ Quiz ============ -->
+<section id="quiz" class="screen" hidden>
+  <div class="topbar">
+    <button class="back" id="qback" aria-label="Retour à l'accueil"><svg viewBox="0 0 24 24" width="22" height="22"><path d="M15 5l-7 7 7 7" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+    <div class="ttl">Quiz</div>
+    <div class="who-s">Pr Hicham MESBAH</div>
+  </div>
+  <div class="qz">
+    <div class="qz-head"><span id="qz-prog"></span><span id="qz-score"></span></div>
+    <div class="qz-track"><div class="qz-bar" id="qz-bar"></div></div>
+    <div id="qz-card">
+      <p class="qz-q" id="qz-q"></p>
+      <div class="qz-opts" id="qz-opts"></div>
+      <div class="fb" id="qz-fb" hidden></div>
+      <button class="btn primary big" id="qz-next" hidden>Question suivante</button>
+    </div>
+    <div id="qz-end" hidden>
+      <div class="qz-final" id="qz-final"></div>
+      <div class="qz-stars" id="qz-stars"></div>
+      <p id="qz-msg"></p>
+      <p class="muted" id="qz-best"></p>
+      <div class="row center"><button class="btn primary big" id="qz-again">Rejouer</button><button class="btn big" id="qz-home">Accueil</button></div>
+    </div>
+  </div>
+</section>
+
+<script src="js/engine.js"></script>
+<script src="js/sims.js"></script>
+<script src="js/quiz.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>

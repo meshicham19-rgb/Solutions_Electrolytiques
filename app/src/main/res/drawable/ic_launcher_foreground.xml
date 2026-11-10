@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Icône : un ion Na+ (violet) entouré de quatre ions Cl- (verts), comme dans le cristal -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp" android:height="108dp"
+    android:viewportWidth="108" android:viewportHeight="108">
+    <path android:strokeColor="#3A5578" android:strokeWidth="2.5"
+        android:pathData="M36,36 L72,36 L72,72 L36,72 Z M54,36 L54,72 M36,54 L72,54" />
+    <path android:fillColor="#35C27A" android:pathData="M36,27 a9,9 0 1,1 -0.01,0 Z" />
+    <path android:fillColor="#35C27A" android:pathData="M72,63 a9,9 0 1,1 -0.01,0 Z" />
+    <path android:fillColor="#9B8CFF" android:pathData="M72,30 a6,6 0 1,1 -0.01,0 Z" />
+    <path android:fillColor="#9B8CFF" android:pathData="M36,66 a6,6 0 1,1 -0.01,0 Z" />
+    <path android:fillColor="#9B8CFF" android:pathData="M54,47 a7,7 0 1,1 -0.01,0 Z" />
+    <path android:fillColor="#FFFFFF" android:fillAlpha="0.5" android:pathData="M51,50 a2.2,2.2 0 1,1 -0.01,0 Z" />
+</vector>
